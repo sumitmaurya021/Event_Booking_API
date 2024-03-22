@@ -7,15 +7,10 @@ Rails.application.routes.draw do
     namespace :api do
       namespace :v1 do
         resources :users
+        resources :events
+        resources :speakers
         post '/login', to: 'users#login'
         post '/logout', to: 'users#logout'
-          resources :events do
-            member do
-              post 'add_speaker'
-              delete 'remove_speaker'
-            end
-          end
-        resources :speakers, only: [:index, :show, :create, :update, :destroy]
       end
     end
 end

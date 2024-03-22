@@ -1,6 +1,6 @@
 class Event < ApplicationRecord
   belongs_to :user
-  has_many :speakers
+  has_and_belongs_to_many :speakers
 
 
   validates :event_name, presence: true

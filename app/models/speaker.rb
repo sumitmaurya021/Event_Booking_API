@@ -5,5 +5,4 @@ class Speaker < ApplicationRecord
   validates :bio, presence: true
   validates :phone, presence: true
   validates :email, presence: true
-  validates :event_id, presence: true
 end

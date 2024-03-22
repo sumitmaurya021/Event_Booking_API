@@ -1,6 +1,6 @@
 class Api::V1::EventsController < ApplicationController
   before_action :doorkeeper_authorize!, except: [:index, :show]
-  before_action :set_event, only: [:show, :update, :destroy, :add_speaker, :remove_speaker]
+  before_action :set_event, only: [:show, :update, :destroy]
   before_action :check_user, except: [:show, :index]
 
   def index
@@ -41,33 +41,6 @@ class Api::V1::EventsController < ApplicationController
     end
   end
 
-  def add_speaker
-    event = Event.find(params[:event_id])
-    speaker = Speaker.find_by_id(params[:speaker_id])
-
-    if speaker.nil?
-      render json: { error: "Speaker not found" }, status: :not_found
-      return
-    end
-
-    event.speakers << speaker
-
-    if event.save
-      render json: event, status: :ok
-    else
-      render json: { error: event.errors.full_messages }, status: :unprocessable_entity
-    end
-  end
-
-  def remove_speaker
-    speaker = Speaker.find(params[:speaker_id])
-    if @event.speakers.delete(speaker)
-      render json: { message: "Speaker removed from the event successfully" }, status: :ok
-    else
-      render json: { errors: "Failed to remove speaker from the event" }, status: :unprocessable_entity
-    end
-  end
-
   private
 
   def set_event
@@ -77,8 +50,6 @@ class Api::V1::EventsController < ApplicationController
   def event_params
     params.require(:event).permit(:event_name, :agenda, :description, :date, :time, :location, :total_tickets, :ticket_price, :total_seats, :user_id, :event_id, :speaker_id)
   end
-
-
 
   def check_user
     unless current_user && (current_user.admin? || (current_user.organizer? && current_user.account_status == "active"))

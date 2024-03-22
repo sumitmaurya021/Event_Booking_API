@@ -1,15 +1,7 @@
 class Api::V1::SpeakersController < ApplicationController
   before_action :doorkeeper_authorize!, except: [:index, :show]
+  before_action :set_speaker, only: [:show, :update, :destroy]
 
-  def create
-    @speaker = Speaker.new(speaker_params)
-
-    if @speaker.save
-      render json: { speaker: @speaker, message: "Speaker created successfully" }, status: :created
-    else
-      render json: { errors: @speaker.errors.full_messages }, status: :unprocessable_entity
-    end
-  end
   def index
     if current_user && current_user.account_status == "active"
     @speakers = Speaker.all
@@ -20,8 +12,26 @@ class Api::V1::SpeakersController < ApplicationController
   end
 
   def show
-    @speaker = Speaker.find(params[:id])
     render json: { speaker: @speaker, message: "This is the speaker with id: #{params[:id]}" }, status: :ok
+  end
+
+  def create
+    @speaker = Speaker.new(speaker_params)
+    if @speaker.save
+      event = Event.find(params[:speaker][:event_id])
+      @speaker.events << event
+      render json: { speaker: @speaker, message: "Speaker created successfully" }, status: :created
+    else
+      render json: { errors: @speaker.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @speaker.update(speaker_params)
+      render json: { speaker: @speaker, message: "Speaker updated successfully" }, status: :ok
+    else
+      render json: { errors: @speaker.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
@@ -34,7 +44,11 @@ class Api::V1::SpeakersController < ApplicationController
 
   private
 
+  def set_speaker
+    @speaker = Speaker.find(params[:id])
+  end
+
   def speaker_params
-    params.require(:speaker).permit(:name, :bio, :phone, :email, :event_id)
+    params.require(:speaker).permit(:name, :bio, :phone, :email, :speaker_id)
   end
 end
