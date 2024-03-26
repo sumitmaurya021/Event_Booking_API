@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_action :doorkeeper_authorize!, only: [:login, :create]
-  before_action :check_admin, only: [:index]
+  before_action :check_user, only: [:index]
   before_action :set_user, only: [:show, :update, :destroy]
 
   def index
