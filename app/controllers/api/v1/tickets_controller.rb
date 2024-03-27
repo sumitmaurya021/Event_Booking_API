@@ -3,22 +3,12 @@ class Api::V1::TicketsController < ApplicationController
 
   def index
     @tickets = Ticket.all
-    render json: @tickets
+    render json: { tickets: @tickets, message: "This is the list of all the tickets" }, status: :ok
   end
 
   def show
-    render json: @ticket
+    render json: { ticket: @ticket, message: "This is the details of the ticket" }, status: :ok
   end
-
-  def create
-    @ticket = Ticket.new(ticket_params)
-    if @ticket.save
-      render json: { ticket: @ticket, message: "Ticket created successfully" }, status: :created
-    else
-      render json: { errors: @ticket.errors.full_messages }, status: :unprocessable_entity
-    end
-  end
-
   def update
     if @ticket.update(ticket_params)
       render json: { ticket: @ticket, message: "Ticket updated successfully" }, status: :ok
@@ -42,6 +32,6 @@ class Api::V1::TicketsController < ApplicationController
   end
 
   def ticket_params
-    params.require(:ticket).permit(:event_id, :ticket_number, :price)
+    params.require(:ticket).permit(:event_id, :ticket_number, :price, :booking_id)
   end
 end

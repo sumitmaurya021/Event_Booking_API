@@ -9,9 +9,9 @@ class User < ApplicationRecord
   validates :password, presence: true
   validates :phone, presence: true
   validates :username, presence: true
-  
 
   has_many :events
+  has_many :bookings
 
 
   def self.authenticate(email, password)

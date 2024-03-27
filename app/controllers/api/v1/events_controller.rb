@@ -19,7 +19,6 @@ class Api::V1::EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
     if @event.save
-      generate_tickets_for_event(@event)
       render json: { event: @event, message: "Event created successfully" }, status: :created
     else
       render json: { errors: @event.errors.full_messages }, status: :unprocessable_entity
@@ -62,18 +61,4 @@ class Api::V1::EventsController < ApplicationController
     end
   end
 
-  def generate_tickets_for_event(event)
-    event.total_tickets.times do
-      ticket_number = generate_ticket_number
-      ticket_price = event.ticket_price
-      event.tickets.create(ticket_number: ticket_number, price: ticket_price)
-    end
-  end
-
-  def generate_ticket_number
-    loop do
-      ticket_number = SecureRandom.hex(4).upcase
-      break ticket_number unless Ticket.exists?(ticket_number: ticket_number)
-    end
-  end
 end

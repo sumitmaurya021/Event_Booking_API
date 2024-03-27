@@ -4,6 +4,7 @@ ruby "3.2.3"
 gem 'devise'
 gem 'doorkeeper'
 gem 'rack-cors'
+gem 'pry-rails'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.3", ">= 7.1.3.2"
