@@ -62,9 +62,11 @@ class Api::V1::UsersController < ApplicationController
   end
 
   private
+
   def set_user
     @user = User.find(params[:id])
   end
+
   def user_params
     params.require(:user).permit(:name, :email, :password, :username, :phone, :role, :account_status)
   end
@@ -75,12 +77,9 @@ class Api::V1::UsersController < ApplicationController
       break token unless Doorkeeper::AccessToken.exists?(refresh_token: token)
     end
   end
+
   def check_user
     render json: { error: 'Unauthorized' , message: 'You are not authorized to perform this action' }, status: :unauthorized unless current_user.admin?
-  end
-
-  def check_organizer
-    render json: { error: 'Unauthorized' , message: 'You are not authorized to perform this action' }, status: :unauthorized unless current_user.organizer?
   end
 
   def generate_access_token(client_app)
@@ -108,5 +107,4 @@ class Api::V1::UsersController < ApplicationController
   def render_unauthorized_response(message)
     render json: { error: message }, status: :unauthorized
   end
-
 end

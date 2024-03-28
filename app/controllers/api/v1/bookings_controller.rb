@@ -6,6 +6,7 @@ class Api::V1::BookingsController < ApplicationController
     @bookings = current_user.bookings
     render json: { bookings: @bookings, message: "This is the list of all the bookings" }, status: :ok
   end
+
   def show
     @booking = current_user.bookings.find_by(id: params[:id])
     render json: { booking: @booking, message: "This is the booking with id: #{params[:id]}" }, status: :ok
@@ -60,11 +61,12 @@ class Api::V1::BookingsController < ApplicationController
     end
   end
 
-
   private
+
   def set_booking
     @booking = current_user.bookings.find_by(id: params[:id])
   end
+
   def booking_params
     params.require(:booking).permit(:event_id, :ticket_number)
   end

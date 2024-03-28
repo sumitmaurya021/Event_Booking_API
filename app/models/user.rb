@@ -12,6 +12,7 @@ class User < ApplicationRecord
 
   has_many :events
   has_many :bookings
+  has_many :tickets, through: :bookings, dependent: :destroy
 
 
   def self.authenticate(email, password)

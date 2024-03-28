@@ -2,13 +2,14 @@ class Api::V1::TicketsController < ApplicationController
   before_action :set_ticket, only: [:show, :update, :destroy]
 
   def index
-    @tickets = Ticket.all
+    @tickets = current_user.tickets
     render json: { tickets: @tickets, message: "This is the list of all the tickets" }, status: :ok
   end
 
   def show
     render json: { ticket: @ticket, message: "This is the details of the ticket" }, status: :ok
   end
+
   def update
     if @ticket.update(ticket_params)
       render json: { ticket: @ticket, message: "Ticket updated successfully" }, status: :ok
@@ -28,7 +29,8 @@ class Api::V1::TicketsController < ApplicationController
   private
 
   def set_ticket
-    @ticket = Ticket.find(params[:id])
+    @ticket = current_user.tickets.find_by(id: params[:id])
+    render json: { error: "Ticket not found" }, status: :not_found unless @ticket
   end
 
   def ticket_params

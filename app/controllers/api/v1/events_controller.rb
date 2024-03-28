@@ -46,7 +46,16 @@ class Api::V1::EventsController < ApplicationController
     render json: { events: @events }, status: :ok
   end
 
+  def search
+    @events = Event.all
+    @events = @events.where("event_name LIKE ?", "%#{params[:event_name]}%") if params[:event_name].present?
+    @events = @events.where("location LIKE ?", "%#{params[:location]}%") if params[:location].present?
+    @events = @events.where(date: params[:date]) if params[:date].present?
+    render json: { events: @events, message: "Filtered events" }, status: :ok
+  end
+
   private
+
   def set_event
     @event = Event.find(params[:id])
   end
@@ -60,5 +69,4 @@ class Api::V1::EventsController < ApplicationController
       render json: { error: 'Unauthorized', message: 'You are not authorized to perform this action' }, status: :unauthorized
     end
   end
-
 end
