@@ -4,8 +4,8 @@ class Api::V1::SpeakersController < ApplicationController
 
   def index
     if current_user && current_user.account_status == "active"
-    @speakers = Speaker.all
-    render json: { speakers: @speakers, message: "This is the list of all the speakers" }, status: :ok
+      @speakers = Speaker.all
+      render json: { speakers: @speakers, message: "This is the list of all the speakers" }, status: :ok
     else
       render json: { error: 'Unauthorized', message: 'You are not authorized to perform this action' }, status: :unauthorized
     end

@@ -1,7 +1,7 @@
 class Api::V1::EventsController < ApplicationController
   before_action :doorkeeper_authorize!, except: [:index, :show]
   before_action :set_event, only: [:show, :update, :destroy]
-  before_action :check_user, except: [:show, :index]
+  before_action :check_user, except: [:show, :index, :create, :update, :destroy, :upcoming_events]
 
   def index
     if current_user && current_user.account_status == "active"
@@ -41,6 +41,19 @@ class Api::V1::EventsController < ApplicationController
     end
   end
 
+  def upcoming_events
+    @events = Event.where("date >= ?", Date.today).order(date: :asc)
+    render json: { events: @events }, status: :ok
+  end
+
+  def search
+    @events = Event.all
+    @events = @events.where("event_name LIKE ?", "%#{params[:event_name]}%") if params[:event_name].present?
+    @events = @events.where("location LIKE ?", "%#{params[:location]}%") if params[:location].present?
+    @events = @events.where(date: params[:date]) if params[:date].present?
+    render json: { events: @events, message: "Filtered events" }, status: :ok
+  end
+
   private
 
   def set_event
@@ -48,7 +61,7 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:event_name, :agenda, :description, :date, :time, :location, :total_tickets, :ticket_price, :total_seats, :user_id, :event_id, :speaker_id)
+    params.require(:event).permit(:event_name, :agenda, :description, :date, :time, :location, :total_tickets, :ticket_price, :total_seats, :user_id)
   end
 
   def check_user

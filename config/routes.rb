@@ -9,8 +9,12 @@ Rails.application.routes.draw do
         resources :users
         resources :events
         resources :speakers
+        resources :tickets
+        resources :bookings
         post '/login', to: 'users#login'
         post '/logout', to: 'users#logout'
+        get '/upcoming_events', to: 'events#upcoming_events'
+        get '/search_events', to: 'events#search'
       end
     end
 end

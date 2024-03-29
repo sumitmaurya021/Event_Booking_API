@@ -1,6 +1,7 @@
 class Event < ApplicationRecord
-  belongs_to :user
+  has_many :users, through: :events, dependent: :destroy
   has_and_belongs_to_many :speakers
+  has_many :tickets
 
 
   validates :event_name, presence: true
@@ -13,4 +14,5 @@ class Event < ApplicationRecord
   validates :ticket_price, presence: true
   validates :total_seats, presence: true
   validates :user_id, presence: true
+
 end
