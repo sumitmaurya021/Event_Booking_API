@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-RAJQC6F7aP8uZvO8A5/9X2Cqg4mwe3ft9HjxBOJ28GMMx1nXYtkathtqnyzJ7+Fd" crossorigin="anonymous">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #fff;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .booking-header {
+      text-align: center;
+      font-size: 32px;
+      color: #333;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    strong {
+      font-weight: bold;
+    }
+
+    .thank-you {
+      text-align: center;
+      font-style: italic;
+      color: #666;
+      animation: slideIn 0.5s ease forwards;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .ticket-design {
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .ticket-design:before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 0;
+      height: 0;
+      border-left: 30px solid transparent;
+      border-right: 30px solid transparent;
+      border-bottom: 30px solid #f9f9f9;
+    }
+
+    .ticket-icon {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
+      color: #333;
+    }
+
+    .thank-you-icon {
+      color: green;
+      font-size: 48px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="booking-header">Booking Confirmation</div>
+    <div class="ticket-design">
+      <i class="fas fa-ticket-alt ticket-icon"></i>
+      <ul>
+        <li><strong>Event Name:</strong> <%= @event.event_name %></li>
+        <li><strong>Event Date:</strong> <%= @event.date.strftime("%B %d, %Y") %></li>
+        <li><strong>Event Time:</strong> <%= @event.time.strftime("%I:%M %p") %></li>
+        <li><strong>Location:</strong> <%= @event.location %></li>
+        <li><strong>Ticket Price:</strong>₹ <%= @event.ticket_price %>/-</li>
+        <li><strong>Tickets:</strong> <%= @booking.tickets.count %></li>
+        <li><strong>Total Price:</strong>₹ <%= @booking.tickets.count * @event.ticket_price %></li>
+      </ul>
+    </div>
+    <p class="thank-you">Thank you for booking with us! <i class="fas fa-check-circle thank-you-icon"></i></p>
+  </div>
+</body>
+</html>

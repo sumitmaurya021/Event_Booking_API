@@ -20,11 +20,12 @@ class Api::V1::BookingsController < ApplicationController
       if @event.total_tickets >= ticket_number
         @booking = current_user.bookings.new(event_id: @event.id)
         if @booking.save
-          error_message = generate_tickets_for_booking(@booking, ticket_number, price, current_user.id)
-          if error_message.nil?
-            render json: { booking: @booking, message: "Booking created successfully" }, status: :created
+          booking_done = generate_tickets_for_booking(@booking, ticket_number, price, current_user.id)
+          if booking_done.nil?
+            BookingMailer.booking_confirmation(current_user, @event, @booking).deliver_now
+            render json: { booking: @booking, message: "Booking successfully" }, status: :created
           else
-            render json: { error: error_message }, status: :unprocessable_entity
+            render json: { error: booking_done }, status: :unprocessable_entity
           end
         else
           render json: { errors: @booking.errors.full_messages }, status: :unprocessable_entity
@@ -36,6 +37,7 @@ class Api::V1::BookingsController < ApplicationController
       render json: { error: "Event not found" }, status: :not_found
     end
   end
+
 
   def update
     if @booking

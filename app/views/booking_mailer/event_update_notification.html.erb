@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Update Notification</title>
+</head>
+<body>
+  <h1>Event Update Notification</h1>
+  <p>Hello,</p>
+  <p>The event <strong><%= @event.event_name %></strong> has been updated.</p>
+  <p><strong>Updated Agenda:</strong> <%= @event.agenda %></p>
+  <p><strong>Updated Description:</strong> <%= @event.description %></p>
+  <p><strong>Updated Date:</strong> <%= @event.date.strftime("%B %d, %Y") %></p>
+  <p><strong>Updated Time:</strong> <%= @event.time.strftime("%I:%M %p") %></p>
+  <p><strong>Updated Location:</strong> <%= @event.location %></p>
+  <p><strong>Total Updated Tickets:</strong> <%= @event.total_tickets %></p>
+  <p><strong>Updated Ticket Price:</strong> <%= number_to_currency(@event.ticket_price, unit: '₹', format: '%u %n') %></p>
+  <p><strong>Updated Total Seats:</strong> <%= @event.total_seats %></p>
+  <p><strong>Updated By:</strong> <%= @event.user.email %></p>
+  <p>Event Updated Date: <%= @event.updated_at.strftime("%B %d, %Y %I:%M %p") %></p>
+  <p>Thank you,</p>
+  <p>Eventify Team</p>
+</body>
+</html>

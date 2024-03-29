@@ -27,11 +27,17 @@ class Api::V1::EventsController < ApplicationController
 
   def update
     if @event.update(event_params)
+      users_to_notify = @event.bookings.distinct.pluck(:user_id)
+      users_to_notify.each do |user_id|
+        user = User.find(user_id)
+        BookingMailer.event_update_notification(user, @event).deliver_now
+      end
       render json: { event: @event, message: "Event updated successfully" }, status: :ok
     else
       render json: { errors: @event.errors.full_messages }, status: :unprocessable_entity
     end
   end
+
 
   def destroy
     if @event.destroy

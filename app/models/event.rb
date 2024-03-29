@@ -1,7 +1,8 @@
 class Event < ApplicationRecord
-  has_many :users, through: :events, dependent: :destroy
+  belongs_to :user
   has_and_belongs_to_many :speakers
   has_many :tickets
+  has_many :bookings, dependent: :destroy
 
 
   validates :event_name, presence: true
