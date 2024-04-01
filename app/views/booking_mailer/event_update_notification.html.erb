@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Event Update Notification</title>
+  <title>Event Update Notification<span>👍</span></title>
 </head>
 <body>
   <h1>Event Update Notification</h1>
@@ -15,7 +15,7 @@
   <p><strong>Total Updated Tickets:</strong> <%= @event.total_tickets %></p>
   <p><strong>Updated Ticket Price:</strong> <%= number_to_currency(@event.ticket_price, unit: '₹', format: '%u %n') %></p>
   <p><strong>Updated Total Seats:</strong> <%= @event.total_seats %></p>
-  <p><strong>Updated By:</strong> <%= @event.user.email %></p>
+  <p><strong>Updated By:</strong> <%= @current_user.email %></p>
   <p>Event Updated Date: <%= @event.updated_at.strftime("%B %d, %Y %I:%M %p") %></p>
   <p>Thank you,</p>
   <p>Eventify Team</p>

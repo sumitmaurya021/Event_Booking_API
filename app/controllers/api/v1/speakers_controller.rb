@@ -16,13 +16,17 @@ class Api::V1::SpeakersController < ApplicationController
   end
 
   def create
-    @speaker = Speaker.new(speaker_params)
-    if @speaker.save
-      event = Event.find(params[:speaker][:event_id])
-      @speaker.events << event
-      render json: { speaker: @speaker, message: "Speaker created successfully" }, status: :created
+    if current_user.admin? || current_user.organizer?
+      @speaker = Speaker.new(speaker_params)
+      if @speaker.save
+        event = Event.find(params[:speaker][:event_id])
+        event.speakers << @speaker
+        render json: { speaker: @speaker, message: "Speaker created successfully" }, status: :created
+      else
+        render json: { errors: @speaker.errors.full_messages }, status: :unprocessable_entity
+      end
     else
-      render json: { errors: @speaker.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: 'Unauthorized', message: 'You are not authorized to perform this action' }, status: :unauthorized
     end
   end
 
@@ -45,7 +49,7 @@ class Api::V1::SpeakersController < ApplicationController
   private
 
   def set_speaker
-    @speaker = Speaker.find(params[:id])
+    @speaker = current_user.speakers.find_by(id: params[:id])
   end
 
   def speaker_params

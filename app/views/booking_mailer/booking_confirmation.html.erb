@@ -113,7 +113,7 @@
 </head>
 <body>
   <div class="container">
-    <div class="booking-header">Booking Confirmation</div>
+    <div class="booking-header">Booking Confirmation <span>🙂</span></div>
     <div class="ticket-design">
       <i class="fas fa-ticket-alt ticket-icon"></i>
       <ul>
@@ -121,7 +121,7 @@
         <li><strong>Event Date:</strong> <%= @event.date.strftime("%B %d, %Y") %></li>
         <li><strong>Event Time:</strong> <%= @event.time.strftime("%I:%M %p") %></li>
         <li><strong>Location:</strong> <%= @event.location %></li>
-        <li><strong>Ticket Price:</strong>₹ <%= @event.ticket_price %>/-</li>
+        <p><strong>Ticket Price:</strong> <%= number_to_currency(@event.ticket_price, unit: '₹', format: '%u %n') %></p>
         <li><strong>Tickets:</strong> <%= @booking.tickets.count %></li>
         <li><strong>Total Price:</strong>₹ <%= @booking.tickets.count * @event.ticket_price %></li>
       </ul>

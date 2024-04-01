@@ -1,11 +1,14 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_action :doorkeeper_authorize!, only: [:login, :create]
-  before_action :check_user, only: [:index]
   before_action :set_user, only: [:show, :update, :destroy]
 
   def index
+    if current_user.admin? || current_user.organizer?
     @users = User.all
     render json: { users: @users, messages: "This is the list of all the users" }, status: :ok
+    else
+      render json: { error: 'Unauthorized', message: 'You are not authorized to perform this action' }, status: :unauthorized
+    end
   end
 
   def show
@@ -76,10 +79,6 @@ class Api::V1::UsersController < ApplicationController
       token = SecureRandom.hex(32)
       break token unless Doorkeeper::AccessToken.exists?(refresh_token: token)
     end
-  end
-
-  def check_user
-    render json: { error: 'Unauthorized' , message: 'You are not authorized to perform this action' }, status: :unauthorized unless current_user.admin?
   end
 
   def generate_access_token(client_app)

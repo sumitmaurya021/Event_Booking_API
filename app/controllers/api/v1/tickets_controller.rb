@@ -20,7 +20,7 @@ class Api::V1::TicketsController < ApplicationController
 
   def destroy
     if @ticket.destroy
-      render json: { message: "Ticket deleted successfully" }, status: :ok
+      render json: { message: "Ticket with id: #{@ticket.id} deleted successfully" }, status: :ok
     else
       render json: { errors: @ticket.errors.full_messages }, status: :unprocessable_entity
     end
@@ -32,7 +32,6 @@ class Api::V1::TicketsController < ApplicationController
     @ticket = current_user.tickets.find_by(id: params[:id])
     render json: { error: "Ticket not found" }, status: :not_found unless @ticket
   end
-
   def ticket_params
     params.require(:ticket).permit(:event_id, :ticket_number, :price, :booking_id)
   end

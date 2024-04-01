@@ -6,9 +6,10 @@ class BookingMailer < ApplicationMailer
     mail(to: @user.email, subject: 'Event Booking Confirmation')
   end
 
-  def event_update_notification(user, event)
+  def event_update_notification(user, event, current_user)
     @user = user
     @event = event
+    @current_user = current_user
     mail(to: @user.email, subject: 'Event Update Notification')
   end
 end

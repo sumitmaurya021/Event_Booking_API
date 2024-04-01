@@ -1,5 +1,4 @@
 class Api::V1::BookingsController < ApplicationController
-  # before_action :authenticate_user!
   before_action :set_booking, only: [:show, :update, :destroy]
 
   def index
@@ -8,7 +7,6 @@ class Api::V1::BookingsController < ApplicationController
   end
 
   def show
-    @booking = current_user.bookings.find_by(id: params[:id])
     render json: { booking: @booking, message: "This is the booking with id: #{params[:id]}" }, status: :ok
   end
 
@@ -37,7 +35,6 @@ class Api::V1::BookingsController < ApplicationController
       render json: { error: "Event not found" }, status: :not_found
     end
   end
-
 
   def update
     if @booking
