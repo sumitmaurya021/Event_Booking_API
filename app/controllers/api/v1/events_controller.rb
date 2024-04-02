@@ -19,6 +19,7 @@ class Api::V1::EventsController < ApplicationController
   def create
     @event = current_user.events.new(event_params)
     if @event.save
+      @event.users << current_user
       render json: { event: @event, message: "Event created successfully" }, status: :created
     else
       render json: { errors: @event.errors.full_messages }, status: :unprocessable_entity

@@ -10,7 +10,8 @@ class User < ApplicationRecord
   validates :phone, presence: true, numericality: { only_integer: true }, length: { is: 10 }
   validates :username, presence: true
 
-  has_many :users
+  has_many :event_users
+  has_many :events, through: :event_users
   has_many :bookings, dependent: :destroy
   has_many :tickets, through: :bookings, dependent: :destroy
 

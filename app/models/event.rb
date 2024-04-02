@@ -1,5 +1,6 @@
 class Event < ApplicationRecord
-  has_many :users, through: :event
+  has_many :event_users
+  has_many :users, through: :event_users
   has_and_belongs_to_many :speakers
   has_many :tickets
   has_many :bookings, dependent: :destroy
