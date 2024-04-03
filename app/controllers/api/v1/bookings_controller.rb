@@ -2,8 +2,15 @@ class Api::V1::BookingsController < ApplicationController
   before_action :set_booking, only: [:show, :update, :destroy]
 
   def index
-    @bookings = current_user.bookings
-    render json: { bookings: @bookings, message: "This is the list of all the bookings" }, status: :ok
+    if current_user.admin? || current_user.organizer?
+      @bookings = Booking.all
+      render json: { bookings: @bookings, message: "This is the list of all the bookings" }, status: :ok
+    elsif current_user.customer?
+      @bookings = current_user.bookings
+      render json: { bookings: @bookings, message: "This is the list of your bookings" }, status: :ok
+    else
+      render json: { error: 'Unauthorized', message: 'You are not authorized to perform this action' }, status: :unauthorized
+    end
   end
 
   def show

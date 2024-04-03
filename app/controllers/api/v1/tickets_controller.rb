@@ -2,8 +2,15 @@ class Api::V1::TicketsController < ApplicationController
   before_action :set_ticket, only: [:show, :update, :destroy]
 
   def index
-    @tickets = current_user.tickets
-    render json: { tickets: @tickets, message: "This is the list of all the tickets" }, status: :ok
+    if current_user.admin? || current_user.organizer?
+      @tickets = Ticket.all
+      render json: { tickets: @tickets, message: "This is the list of all the tickets" }, status: :ok
+    elsif current_user.customer?
+      @tickets = current_user.tickets
+      render json: { tickets: @tickets, message: "This is the list of your tickets" }, status: :ok
+    else
+      render json: { error: 'Unauthorized', message: 'You are not authorized to perform this action' }, status: :unauthorized
+    end
   end
 
   def show

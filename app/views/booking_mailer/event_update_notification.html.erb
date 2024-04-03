@@ -1,23 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Event Update Notification<span>👍</span></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Update Notification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .title {
+      text-align: center;
+      color: #333;
+    }
+    
+    .content {
+      margin-top: 20px;
+    }
+    
+    p {
+      margin-bottom: 10px;
+    }
+    
+    strong {
+      font-weight: bold;
+    }
+    
+    span {
+      font-size: 20px;
+      margin-left: 5px;
+    }    
+  </style>
 </head>
 <body>
-  <h1>Event Update Notification</h1>
-  <p>Hello,</p>
-  <p>The event <strong><%= @event.event_name %></strong> has been updated.</p>
-  <p><strong>Updated Agenda:</strong> <%= @event.agenda %></p>
-  <p><strong>Updated Description:</strong> <%= @event.description %></p>
-  <p><strong>Updated Date:</strong> <%= @event.date.strftime("%B %d, %Y") %></p>
-  <p><strong>Updated Time:</strong> <%= @event.time.strftime("%I:%M %p") %></p>
-  <p><strong>Updated Location:</strong> <%= @event.location %></p>
-  <p><strong>Total Updated Tickets:</strong> <%= @event.total_tickets %></p>
-  <p><strong>Updated Ticket Price:</strong> <%= number_to_currency(@event.ticket_price, unit: '₹', format: '%u %n') %></p>
-  <p><strong>Updated Total Seats:</strong> <%= @event.total_seats %></p>
-  <p><strong>Updated By:</strong> <%= @current_user.email %></p>
-  <p>Event Updated Date: <%= @event.updated_at.strftime("%B %d, %Y %I:%M %p") %></p>
-  <p>Thank you,</p>
-  <p>Eventify Team</p>
+  <div class="container">
+    <h1 class="title">Event Update Notification <span>👍</span></h1>
+    <div class="content">
+      <p>Hello,</p>
+      <p>The event <strong><%= @event.event_name %></strong> has been updated.</p>
+      <p><strong>Updated Agenda:</strong> <%= @event.agenda %></p>
+      <p><strong>Updated Description:</strong> <%= @event.description %></p>
+      <p><strong>Updated Date:</strong> <%= @event.date.strftime("%B %d, %Y") %></p>
+      <p><strong>Updated Time:</strong> <%= @event.time.strftime("%I:%M %p") %></p>
+      <p><strong>Updated Location:</strong> <%= @event.location %></p>
+      <p><strong>Total Updated Tickets:</strong> <%= @event.total_tickets %></p>
+      <p><strong>Updated Ticket Price:</strong> <%= number_to_currency(@event.ticket_price, unit: '₹', format: '%u %n') %></p>
+      <p><strong>Updated Total Seats:</strong> <%= @event.total_seats %></p>
+      <p><strong>Updated By:</strong> <%= @current_user.email %></p>
+      <p>Event Updated Date: <%= @event.updated_at.strftime("%B %d, %Y %I:%M %p") %></p>
+      <p>Thank you,</p>
+      <p>Eventify Team</p>
+    </div>
+  </div>
 </body>
 </html>
