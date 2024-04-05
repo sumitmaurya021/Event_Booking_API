@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  root "users#home"
   use_doorkeeper do
     skip_controllers :authorizations, :applications, :authorized_applications
   end
