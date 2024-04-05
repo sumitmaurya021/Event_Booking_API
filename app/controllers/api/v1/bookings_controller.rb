@@ -81,7 +81,7 @@ class Api::V1::BookingsController < ApplicationController
     event = Event.find(booking.event_id)
     ticket_count.times do
       ticket_number = generate_ticket_number
-      ticket = Ticket.create(ticket_number: ticket_number, event_id: event.id, booking_id: booking.id, user_id: user_id, price: price) # Assign user_id
+      ticket = Ticket.create(ticket_number: ticket_number, event_id: event.id, booking_id: booking.id, user_id: user_id, price: price)
       unless ticket.valid?
         return "Failed to create ticket: #{ticket.errors.full_messages.join(', ')}"
       end

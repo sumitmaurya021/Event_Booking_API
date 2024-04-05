@@ -14,7 +14,6 @@ class Api::V1::SpeakersController < ApplicationController
   def show
     render json: { speaker: @speaker, message: "This is the speaker with id: #{params[:id]}" }, status: :ok
   end
-
   def create
     if current_user.admin? || current_user.organizer?
       @speaker = Speaker.new(speaker_params)

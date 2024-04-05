@@ -1,4 +1,5 @@
 class Api::V1::TicketsController < ApplicationController
+  before_action :doorkeeper_authorize!, only: [:index, :show ]
   before_action :set_ticket, only: [:show, :update, :destroy]
 
   def index

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Analytics</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #dddddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center;">Event Analytics</h1>
+  <table>
+    <tr>
+      <th>Event Name</th>
+      <th>Location</th>
+      <th>Date</th>
+      <th>Ticket Price</th>
+      <th>Total Tickets</th>
+      <th>Remaining Tickets</th>
+      <th>Total Ticket Bookings</th>
+      <th>Total Speakers</th>
+      <th>Event Total Seats</th>
+      <th>Remaining Seats</th>
+      <th>Event Revenue</th>
+    </tr>
+    <tr>
+      <td><%= event.event_name %></td>
+      <td><%= event.location %></td>
+      <td><%= event.date %></td>
+      <td><%= event.ticket_price %></td>
+      <td><%= event.total_tickets %></td>
+      <td><%= event.total_tickets - event.bookings.count %></td>
+      <td><%= event.bookings.count %></td>
+      <td><%= event.speakers.count %></td>
+      <td><%= event.total_seats %></td>
+      <td><%= event.total_seats - event.bookings.count %></td>
+      <td><%= event.bookings.count * event.ticket_price %></td>
+    </tr>
+  </table>
+</body>
+</html>

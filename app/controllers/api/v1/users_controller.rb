@@ -1,7 +1,6 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_action :doorkeeper_authorize!, only: [:login, :create]
   before_action :set_user, only: [:show, :update, :destroy]
-
   def index
     if current_user.admin? || current_user.organizer?
     @users = User.all
@@ -65,7 +64,6 @@ class Api::V1::UsersController < ApplicationController
   end
 
   private
-
   def set_user
     @user = User.find(params[:id])
   end

@@ -7,7 +7,7 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, presence: true
   validates :password, presence: true, length: {minimum: 8, maximum: 32}
-  validates :phone, presence: true, numericality: { only_integer: true }, length: { is: 10 }
+  validates :phone, presence: true, length: {is: 10}
   validates :username, presence: true
 
   has_many :event_users
@@ -32,5 +32,4 @@ class User < ApplicationRecord
   def customer?
     self.role == "customer"
   end
-
 end
