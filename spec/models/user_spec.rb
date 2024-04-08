@@ -3,29 +3,58 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   subject { User.new(name: 'Sumit', email: 'mauryasumit222@gmail.com', password: 'maurya!154321', phone: '7649876578', account_status: 'active', username: 'sumitmaurya021') }
 
-  it 'is valid with valid attributes' do
-    expect(subject).to be_valid
-  end
+  describe 'validations' do
 
-  it 'is not valid without a name' do
-    subject.name = nil
-    expect(subject).to_not be_valid
-  end
+    it 'is valid with valid attributes' do
+      expect(subject).to be_valid
+    end
 
-  it 'is not valid without an email' do
-    subject.email = nil
-    expect(subject).to_not be_valid
-  end
+    it 'is not valid without a name' do
+      subject.name = nil
+      expect(subject).to_not be_valid
+    end
 
-  it 'is not valid if the phone number is not 10 digits' do
-    expect(subject.phone.length).to eq(10)
-  end
+    it 'is not valid without an email' do
+      subject.email = nil
+      expect(subject).to_not be_valid
+    end
 
-  it 'is not valid without a password' do
-    subject.password = nil
-    expect(subject).to_not be_valid
-  end
-  
+    it 'is not valid if the phone number is not 10 digits' do
+      expect(subject.phone.length).to eq(10)
+    end
+
+    it 'is not valid without a password' do
+      subject.password = nil
+      expect(subject).to_not be_valid
+    end
+
+    it 'validates presence of password' do
+      subject.password = nil
+      expect(subject).to_not be_valid
+    end
+
+    it 'is not valid without a username' do
+      subject.username = nil
+      expect(subject).to_not be_valid
+    end
+
+    it 'validates minumum length of password' do
+      subject.password = '12345678'
+      expect(subject).to be_valid
+    end
+
+    it 'validates maximum length of password' do
+      subject.password = '12345678901234567890123456789012'
+      expect(subject).to be_valid
+    end
+
+    it 'validates within length of password' do
+      subject.password = '12345678'
+      expect(subject).to be_valid
+    end
+
+end
+
   it 'get all users in index' do
     User.create(name: 'Sam')
     User.create(name: 'Samira')

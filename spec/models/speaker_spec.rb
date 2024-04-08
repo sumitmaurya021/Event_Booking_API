@@ -1,6 +1,36 @@
 require 'rails_helper'
 
 RSpec.describe Speaker, type: :model do
+
+  subject { Speaker.new(name: 'Sam', bio: 'bio', phone: '7649876578', email: 'mauryasumit222@gmail.com') }
+
+  describe 'validations' do
+
+    it 'is valid with valid attributes' do
+      expect(subject).to be_valid
+    end
+
+    it 'is valid with name' do
+      subject.name = 'Sam'
+      expect(subject).to be_valid
+    end
+
+    it 'is valid with bio' do
+      subject.bio = 'bio'
+      expect(subject).to be_valid
+    end
+
+    it 'is valid with phone' do
+      subject.phone = '7649876578'
+      expect(subject).to be_valid
+    end
+
+    it 'is valid with email' do
+      subject.email = 'mauryasumit222@gmail.com'
+      expect(subject).to be_valid
+    end
+  end
+
   describe '#index' do
     it 'get all speakers in index' do
       Speaker.create(name: 'Sam')

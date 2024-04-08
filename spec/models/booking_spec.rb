@@ -11,6 +11,16 @@ RSpec.describe Booking, type: :model do
     end
   end
 
+  describe '#event_id' do
+   it 'event_id can present or not' do
+    booking = Booking.new
+    booking.user_id = 1
+    booking.event_id = 1
+    booking.save
+    expect(booking.event_id).to eq(1)
+   end
+  end
+
   describe '#index' do
     it 'get all bookings in index' do
       Booking.create(user_id: 1, event_id: 1)
