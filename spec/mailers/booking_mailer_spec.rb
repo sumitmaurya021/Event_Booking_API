@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe BookingMailer, type: :mailer do
 
   describe '#booking_confirmation' do
-    let(:user) { FactoryBot.create(:user, email: 'hJpjO@example.com') }
+    let(:user) { FactoryBot.create(:user) }
     let(:event) { FactoryBot.create(:event) }
     let(:booking) { FactoryBot.create(:booking, user: user, event: event) }
 
@@ -13,7 +13,7 @@ RSpec.describe BookingMailer, type: :mailer do
       expect(ActionMailer::Base.deliveries.count).to eq(1)
       expect(email.to).to eq([user.email])
       expect(email.subject).to eq('Event Booking Confirmation')
-      
+
     end
   end
 

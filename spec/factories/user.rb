@@ -6,5 +6,6 @@ FactoryBot.define do
     username { Faker::Internet.username }
     phone { "7649876578" }
     account_status { 'active' }
+    role { 'admin' }
   end
 end

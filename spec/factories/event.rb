@@ -6,8 +6,8 @@ FactoryBot.define do
     location { Faker::Address.full_address }
     agenda { Faker::Lorem.paragraph(sentence_count: 2) }
     description { Faker::Lorem.paragraph(sentence_count: 2) }
-    total_tickets { 100 }
-    ticket_price { 1000 }
-    total_seats { 100 }
+    total_tickets { Faker::Number.between(from: 1, to: 200) }
+    ticket_price { Faker::Commerce.price }
+    total_seats { Faker::Number.between(from: 50, to: 200) }
   end
 end

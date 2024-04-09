@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :booking do
-    association :user, factory: :user
-    association :event, factory: :event
+    event_id { 1 }
+    user_id { 1 }
   end
 end
