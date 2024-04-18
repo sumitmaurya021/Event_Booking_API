@@ -1,9 +1,17 @@
 class Api::V1::TicketsController < ApplicationController
+  before_action :doorkeeper_authorize!, only: [:index, :show ]
   before_action :set_ticket, only: [:show, :update, :destroy]
 
   def index
-    @tickets = current_user.tickets
-    render json: { tickets: @tickets, message: "This is the list of all the tickets" }, status: :ok
+    if current_user.admin? || current_user.organizer?
+      @tickets = Ticket.all
+      render json: { tickets: @tickets, message: "This is the list of all the tickets" }, status: :ok
+    elsif current_user.customer?
+      @tickets = current_user.tickets
+      render json: { tickets: @tickets, message: "This is the list of your tickets" }, status: :ok
+    else
+      render json: { error: 'Unauthorized', message: 'You are not authorized to perform this action' }, status: :unauthorized
+    end
   end
 
   def show
@@ -20,7 +28,7 @@ class Api::V1::TicketsController < ApplicationController
 
   def destroy
     if @ticket.destroy
-      render json: { message: "Ticket deleted successfully" }, status: :ok
+      render json: { message: "Ticket with id: #{@ticket.id} deleted successfully" }, status: :ok
     else
       render json: { errors: @ticket.errors.full_messages }, status: :unprocessable_entity
     end
@@ -32,7 +40,6 @@ class Api::V1::TicketsController < ApplicationController
     @ticket = current_user.tickets.find_by(id: params[:id])
     render json: { error: "Ticket not found" }, status: :not_found unless @ticket
   end
-
   def ticket_params
     params.require(:ticket).permit(:event_id, :ticket_number, :price, :booking_id)
   end

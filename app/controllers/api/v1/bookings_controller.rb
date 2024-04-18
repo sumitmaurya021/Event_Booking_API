@@ -1,14 +1,19 @@
 class Api::V1::BookingsController < ApplicationController
-  # before_action :authenticate_user!
   before_action :set_booking, only: [:show, :update, :destroy]
 
   def index
-    @bookings = current_user.bookings
-    render json: { bookings: @bookings, message: "This is the list of all the bookings" }, status: :ok
+    if current_user.admin? || current_user.organizer?
+      @bookings = Booking.all
+      render json: { bookings: @bookings, message: "This is the list of all the bookings" }, status: :ok
+    elsif current_user.customer?
+      @bookings = current_user.bookings
+      render json: { bookings: @bookings, message: "This is the list of your bookings" }, status: :ok
+    else
+      render json: { error: 'Unauthorized', message: 'You are not authorized to perform this action' }, status: :unauthorized
+    end
   end
 
   def show
-    @booking = current_user.bookings.find_by(id: params[:id])
     render json: { booking: @booking, message: "This is the booking with id: #{params[:id]}" }, status: :ok
   end
 
@@ -37,7 +42,6 @@ class Api::V1::BookingsController < ApplicationController
       render json: { error: "Event not found" }, status: :not_found
     end
   end
-
 
   def update
     if @booking
@@ -77,7 +81,7 @@ class Api::V1::BookingsController < ApplicationController
     event = Event.find(booking.event_id)
     ticket_count.times do
       ticket_number = generate_ticket_number
-      ticket = Ticket.create(ticket_number: ticket_number, event_id: event.id, booking_id: booking.id, user_id: user_id, price: price) # Assign user_id
+      ticket = Ticket.create(ticket_number: ticket_number, event_id: event.id, booking_id: booking.id, user_id: user_id, price: price)
       unless ticket.valid?
         return "Failed to create ticket: #{ticket.errors.full_messages.join(', ')}"
       end

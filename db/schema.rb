@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_27_091005) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_09_053918) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -23,6 +23,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_27_091005) do
     t.index ["user_id"], name: "index_bookings_on_user_id"
   end
 
+  create_table "event_users", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id", "user_id"], name: "index_event_users_on_event_id_and_user_id", unique: true
+    t.index ["event_id"], name: "index_event_users_on_event_id"
+    t.index ["user_id"], name: "index_event_users_on_user_id"
+  end
+
   create_table "events", force: :cascade do |t|
     t.string "event_name"
     t.text "agenda"
@@ -33,7 +43,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_27_091005) do
     t.integer "total_tickets"
     t.decimal "ticket_price"
     t.integer "total_seats"
-    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -131,6 +140,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_27_091005) do
 
   add_foreign_key "bookings", "events"
   add_foreign_key "bookings", "users"
+  add_foreign_key "event_users", "events"
+  add_foreign_key "event_users", "users"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "tickets", "bookings"

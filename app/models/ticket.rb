@@ -5,4 +5,6 @@ class Ticket < ApplicationRecord
 
   validates :price, presence: true
   validates :ticket_number, presence: true
+
+
 end

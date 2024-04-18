@@ -5,13 +5,14 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   validates :name, presence: true
-  validates :email, presence: true
-  validates :password, presence: true
-  validates :phone, presence: true
+  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, presence: true
+  validates :password, presence: true, length: {minimum: 8, maximum: 32}
+  validates :phone, presence: true, length: {is: 10}
   validates :username, presence: true
 
-  has_many :events
-  has_many :bookings
+  has_many :event_users
+  has_many :events, through: :event_users
+  has_many :bookings, dependent: :destroy
   has_many :tickets, through: :bookings, dependent: :destroy
 
 
@@ -21,15 +22,14 @@ class User < ApplicationRecord
   end
 
   def admin?
-    role == "admin"
+    self.role == "admin"
   end
 
   def organizer?
-    role == "organizer"
+    self.role == "organizer"
   end
 
   def customer?
-    role == "customer"
+    self.role == "customer"
   end
-
 end
